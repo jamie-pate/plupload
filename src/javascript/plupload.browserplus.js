@@ -149,7 +149,7 @@
 							ext = filters[i].extensions.split(',');
 
 							for (a = 0; a < ext.length; a++) {
-								mimeTypes.push(plupload.mimeTypes[ext[a]]);
+								mimeTypes.push(plupload.mimeTypes[ext[a].toLowerCase()]);
 							}
 						}
 

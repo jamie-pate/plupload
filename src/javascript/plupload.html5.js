@@ -223,7 +223,7 @@
 					ext = filters[i].extensions.split(/,/);
 
 					for (y = 0; y < ext.length; y++) {
-						type = plupload.mimeTypes[ext[y]];
+						type = plupload.mimeTypes[ext[y].toLowerCase()];
 
 						if (type) {
 							mimes.push(type);
