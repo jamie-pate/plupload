@@ -57,7 +57,10 @@
 
 	<target name="clean">
 		<delete quiet="true">
-			<fileset dir="js" includes="**/*"/>
+			<fileset dir="js" includes="**/*">
+				<exclude name="plupload.flash.swf"/>
+				<exclude name="plupload.silverlight.xap"/>
+			</fileset>
 		</delete>
 	</target>
 
@@ -120,6 +123,13 @@
 				<exclude name="**/jslint.xml"/>
 			</fileset>
 		</copy>
+		
+		<copy todir="${tmp_dir}/plupload/js">
+			<fileset dir="js/">
+				<include name="plupload.flash.swf"/>
+				<include name="plupload.silverlight.xap"/>
+			</fileset>
+		</copy>
 
 		<!-- Parse minor version, major version and release date from changelog -->
 		<loadfile property="changelog" srcFile="${tmp_dir}/plupload/changelog.txt" />
@@ -136,15 +146,35 @@
 				<include name="*/**" />
 			</fileset>
 		</replaceregexp>
-
-		<!-- Compress core package -->
-		<delete file="${tmp_dir}/plupload_${file_version}_core.zip" quiet="true" />
-		<zip destfile="${tmp_dir}/plupload_${file_version}_core.zip">
+		
+		
+		<!-- Compress dev package -->
+		<delete file="${tmp_dir}/plupload_${file_version}_dev.zip" quiet="true" />
+		<zip destfile="${tmp_dir}/plupload_${file_version}_dev.zip">
 			<zipfileset dir="${tmp_dir}/plupload" prefix="plupload">
 				<include name="*/**" />
-				<exclude name="examples/jquery/**" />
+			</zipfileset>
+		</zip>
+		
+		<!-- Load proper versions of scripts in examples -->
+		<replaceregexp byline="true">
+			<regexp pattern="src\/javascript\/" />
+			<substitution expression="js\/" />
+
+			<fileset dir="${tmp_dir}/plupload/examples">
+				<include name="*/**" />
+			</fileset>
+		</replaceregexp>
+		
+
+		<!-- Compress core package -->
+		<delete file="${tmp_dir}/plupload_${file_version}.zip" quiet="true" />
+		<zip destfile="${tmp_dir}/plupload_${file_version}.zip">
+			<zipfileset dir="${tmp_dir}/plupload" prefix="plupload">
+				<include name="*/**" />
+				<!-- <exclude name="examples/jquery/**" /> -->
 				<exclude name="src/**" />
-				<exclude name="js/jquery*/**" />
+				<!-- <exclude name="js/jquery*/**" /> -->
 				<exclude name="tools/**" />
 				<exclude name="build.xml" />
 				<exclude name="build.bat" />
@@ -153,7 +183,7 @@
 		</zip>
 
 		<!-- Compress jQuery package -->
-		<delete file="${tmp_dir}/plupload_${file_version}_jquery.zip" quiet="true" />
+		<!--<delete file="${tmp_dir}/plupload_${file_version}_jquery.zip" quiet="true" />
 		<zip destfile="${tmp_dir}/plupload_${file_version}_jquery.zip">
 			<zipfileset dir="${tmp_dir}/plupload" prefix="plupload">
 				<include name="*/**" />
@@ -163,14 +193,8 @@
 				<exclude name="build.bat" />
 				<exclude name="tests/**" />
 			</zipfileset>
-		</zip>
+		</zip>-->
 
-		<!-- Compress dev package -->
-		<delete file="${tmp_dir}/plupload_${file_version}_dev.zip" quiet="true" />
-		<zip destfile="${tmp_dir}/plupload_${file_version}_dev.zip">
-			<zipfileset dir="${tmp_dir}/plupload" prefix="plupload">
-				<include name="*/**" />
-			</zipfileset>
-		</zip>
+		
 	</target>
 </project>
