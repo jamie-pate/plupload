@@ -110,6 +110,7 @@ package com.plupload {
 		// Private methods
 
 		public function canUseSimpleUpload(settings:Object):Boolean {
+			return false;
 			var multipart:Boolean = new Boolean(settings["multipart"]);
 			var resize:Boolean = (settings["width"] || settings["height"] || settings["quality"]);
 			var chunking:Boolean = (settings["chunk_size"] > 0);
