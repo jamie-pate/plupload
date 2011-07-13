@@ -145,11 +145,16 @@
 						e.preventDefault();
 
 						// Convert extensions to mimetypes
+						no_type_restriction:
 						for (i = 0; i < filters.length; i++) {
 							ext = filters[i].extensions.split(',');
 
 							for (a = 0; a < ext.length; a++) {
-								mimeTypes.push(plupload.mimeTypes[ext[a].toLowerCase()]);
+								if (ext[a] === '*') {
+									mimeTypes = [];
+									break no_type_restriction;
+								}
+								mimeTypes.push(plupload.mimeTypes[ext[a]]);
 							}
 						}
 
